@@ -90,6 +90,7 @@ class DeviceDescriptor(object):
         return None
 
 class Controller():
+    TEAMCITY_URI = 'simbuild'
     SIGNALS = {
         "green": {
             "on": "\x65\x0C\x01\x00\x00\x00\x00\x00",
@@ -125,7 +126,7 @@ class Controller():
 
     def __is_broken__(self, build_id):
         request = urllib2.Request(
-            'http://simbuild/guestAuth/app/rest/buildTypes/id:%s/builds' % build_id,
+            'http://%s/guestAuth/app/rest/buildTypes/id:%s/builds' % (self.TEAMCITY_URI, build_id),
             headers = {'Accept': 'application/json'}
         )
         builds = json.loads(urllib2.urlopen(request).read())
