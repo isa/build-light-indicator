@@ -28,7 +28,7 @@ class DelcomUSBDevice(object):
     def open(self):
         try:
             self.handle = self.device.open()
-            # self.handle.detachKernelDriver(0)
+            self.handle.detachKernelDriver(0)
         except usb.USBError, err:
             if str(err).find('could not detach kernel driver from interface') >= 0:
                 print 'The in-kernel-HID driver has already been detached'
