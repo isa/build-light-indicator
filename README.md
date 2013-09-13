@@ -21,3 +21,9 @@ class Controller():
 Pass as many as build types to the script to check. You might wanna put this script into the cron to do periodic checking..
 
     sudo python delcom.py bt1 bt2 bt7
+
+or
+
+    sudo python delcom.py all
+
+In second case though, you gotta edit the api url to enter ur project id. I don't have time to make it generic atm.

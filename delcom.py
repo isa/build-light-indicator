@@ -133,8 +133,27 @@ class Controller():
 
         return str(builds['build'][0]['status']) == 'FAILURE'
 
+    def __gather_all_builds__(self):
+        request = urllib2.Request(
+            'http://%s/guestAuth/app/rest/builds/?locator=project:Kcg&count=256' % self.TEAMCITY_URI,
+            headers={'Accept': 'application/json'}
+        )
+
+        return json.loads(urllib2.urlopen(request).read())['build']
+
     def has_failure(self, build_ids):
         failed = False
+
+        if 'all' in build_ids:
+            from sets import Set
+            builds = self.__gather_all_builds__()
+            unique_build_ids = Set([b['buildTypeId'] for b in builds])
+
+            for b in builds:
+                if b['buildTypeId'] in unique_build_ids:
+                    unique_build_ids.remove(b['buildTypeId'])
+                    if b['status'] != 'SUCCESS':
+                        return True
 
         for build_id in build_ids:
             failed |= self.__is_broken__(build_id)
